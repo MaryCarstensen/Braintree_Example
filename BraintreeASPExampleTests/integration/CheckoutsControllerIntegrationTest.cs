@@ -4,13 +4,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Collections.ObjectModel;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
+using NUnit.Framework;
 
 namespace BraintreeASPExampleTests.integration
 {
-    [TestClass]
+    [TestFixture]
     public class CheckoutsControllerIntegrationTest
     {
         // Setup of IIS server with Selenium from http://stephenwalther.com/archive/2011/12/22/asp-net-mvc-selenium-iisexpress
@@ -21,7 +21,7 @@ namespace BraintreeASPExampleTests.integration
         private Process _iisProcess;
         IWebDriver driver = new FirefoxDriver();
 
-        [TestInitialize]
+        [SetUp]
         public void TestInitialize()
         {
             StartIIS();
@@ -29,7 +29,7 @@ namespace BraintreeASPExampleTests.integration
             driver.Manage().Timeouts().ImplicitlyWait(timeoutForgiving);
         }
 
-        [TestCleanup]
+        [TearDown]
         public void TestCleanup()
         {
             // Ensure IISExpress is stopped
@@ -84,7 +84,7 @@ namespace BraintreeASPExampleTests.integration
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestCheckoutsPageRenders()
         {
             driver.Navigate().GoToUrl(GetAbsoluteUrl("/"));
@@ -101,7 +101,7 @@ namespace BraintreeASPExampleTests.integration
             Assert.IsTrue(driver.FindElement(By.Id("expiration")).Displayed);
         }
 
-        [TestMethod]
+        [Test]
         public void TestProcessesTransactionAndDisplaysDetails()
         {
             driver.Navigate().GoToUrl(GetAbsoluteUrl("/"));
@@ -124,7 +124,7 @@ namespace BraintreeASPExampleTests.integration
             Assert.IsTrue(headerTags[1].GetAttribute("innerText").Contains("Payment"));
         }
 
-        [TestMethod]
+        [Test]
         public void TestTransactionProcessorDeclined()
         {
             driver.Navigate().GoToUrl(GetAbsoluteUrl("/"));
@@ -150,7 +150,7 @@ namespace BraintreeASPExampleTests.integration
             );
         }
 
-        [TestMethod]
+        [Test]
         public void TestStaysOnCheckoutPageIfTransactionFails()
         {
             driver.Navigate().GoToUrl(GetAbsoluteUrl("/"));

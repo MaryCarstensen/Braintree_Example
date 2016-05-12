@@ -3,17 +3,15 @@ using BraintreeASPExample;
 using Moq;
 using System;
 using System.Text;
-using System.Web;
-using System.Web.Mvc;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace BraintreeASPExampleTests
 {
-    [TestClass]
+    [TestFixture]
     public class CheckoutsControllerTest
     {
-        [TestMethod]
+        [Test]
         public void TestForClientToken()
         {
             var clientTokenMock = new Mock<IClientTokenGateway>();
@@ -25,7 +23,7 @@ namespace BraintreeASPExampleTests
 
             var controller = new BraintreeASPExample.Controllers.CheckoutsController();
             controller.config = braintreeConfigurationMock.Object;
-            var result = controller.New() as ViewResult;
+            var result = controller.New() as System.Web.Mvc.ViewResult;
 
             Assert.AreEqual("CLIENT_TOKEN", result.ViewData["ClientToken"]);
         }
